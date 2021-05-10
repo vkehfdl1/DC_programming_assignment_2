@@ -1,0 +1,26 @@
+version: '3.7'
+services:
+        influxdb:
+                image: influxdb_grafana/vkehfdl1:0.0.5
+                volumes:
+                        - /path/for/influxdb:/var/lib/influxdb
+                        - /path/for/grafana:/var/lib/grafana
+                ports:
+                        - "6900:3003"
+                        - "6901:8083"
+                        - "6902:8086"
+                environment:
+                        - DOCKER_INFLUXDB_INIT_USERNAME=root
+                        - DOCKER_INFLUXDB_INIT_PASSWORD=root
+                        - DOCKER_INFLUXDB_INIT_ORG=khu
+                        - DOCKER_INFLUXDB_INIT_BUCKET=myDB
+                networks:
+                        - int_net
+        send_data:
+                image: data_to_influxdb:0.0.3
+                networks:
+                        - int_net
+
+networks:
+        int_net:
+                driver: bridge
